@@ -28,6 +28,8 @@ puppeteer.launch({ headless: true }).then(async (browser) => {
   await page.click("#passwordNext");
 
   await page.goto("https://www.youtube.com/music_policies?nv=1");
+  await page.waitFor(500);
+  await page.waitForSelector('input[type="text"]');
   await page.screenshot({ path: "testresult.png", fullPage: true });
   //   await page.waitForSelector('input[type="text"]');
   //   await page.click('input[type="text"]');
@@ -37,6 +39,6 @@ puppeteer.launch({ headless: true }).then(async (browser) => {
   //   await page.goto("https://bot.sannysoft.com");
   //   await page.waitFor(5000);
   //   await page.screenshot({ path: "testresult.png", fullPage: true });
-  //await browser.close();
+  await browser.close();
   //   console.log(`All done, check the screenshot. ✨`);
 });
