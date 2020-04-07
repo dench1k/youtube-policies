@@ -7,7 +7,7 @@ const StealthPlugin = require("puppeteer-extra-plugin-stealth");
 puppeteer.use(StealthPlugin());
 
 // puppeteer usage as normal
-puppeteer.launch({ headless: true }).then(async (browser) => {
+puppeteer.launch({ headless: false, slowMo: 150 }).then(async (browser) => {
   const page = await browser.newPage();
   await page.goto("https://accounts.google.com/");
 
@@ -27,10 +27,8 @@ puppeteer.launch({ headless: true }).then(async (browser) => {
   await page.waitForSelector("#passwordNext");
   await page.click("#passwordNext");
 
-  await page.goto("https://www.youtube.com/music_policies?nv=1");
-  await page.waitFor(500);
-  await page.waitForSelector('input[type="text"]');
-  await page.screenshot({ path: "testresult.png", fullPage: true });
+  //await page.goto("https://www.youtube.com/music_policies?nv=1");
+  //await page.screenshot({ path: "testresult.png", fullPage: true });
   //   await page.waitForSelector('input[type="text"]');
   //   await page.click('input[type="text"]');
   //   await page.waitFor(500);
