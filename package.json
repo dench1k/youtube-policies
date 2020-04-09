@@ -1,0 +1,19 @@
+{
+  "name": "youtube-policies",
+  "version": "1.0.0",
+  "description": "A simple youtube music policies checker via puppeteer",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dench1k/youtube-policies.git"
+  },
+  "author": "Den Moskvitin",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dench1k/youtube-policies/issues"
+  },
+  "homepage": "https://github.com/dench1k/youtube-policies#readme"
+}
