@@ -22,7 +22,7 @@ puppeteer
 
     await page.waitForSelector('input[type="email"]');
     await page.click('input[type="email"]');
-    await page.type('input[type="email"]', "login@gmail.com");
+    await page.type('input[type="email"]', "log@gmail.com");
 
     await page.waitForSelector("#identifierNext");
     await page.click("#identifierNext");
@@ -46,17 +46,19 @@ puppeteer
     console.log("redirected");
     await page.waitFor(5000);
 
-    await page.waitForSelector('input[type="text"]');
+    //await page.waitForSelector(".title-input");
     await page.evaluate(() => {
-      document.querySelector('input[type="text"]').click();
+      document.querySelectorAll(".yt-alert-message > a")[1].click();
     });
-    await page.type('input[type="text"]', "Dustkey - Your Letter");
+    console.log("clicked");
+    await page.waitFor(2500);
+    //await page.type(".title-input", "Dustkey - Your Letter");
     await page.screenshot({ path: "testresult.png", fullPage: true });
     console.log("screenshoted");
 
     //   await page.goto("https://bot.sannysoft.com");
     //   await page.waitFor(5000);
     //   await page.screenshot({ path: "testresult.png", fullPage: true });
-    //await browser.close();
+    await browser.close();
     //   console.log(`All done, check the screenshot. ✨`);
   });
