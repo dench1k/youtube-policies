@@ -7,36 +7,56 @@ const StealthPlugin = require("puppeteer-extra-plugin-stealth");
 puppeteer.use(StealthPlugin());
 
 // puppeteer usage as normal
-puppeteer.launch({ headless: false, slowMo: 150 }).then(async (browser) => {
-  const page = await browser.newPage();
-  await page.goto("https://accounts.google.com/");
+puppeteer
+  .launch({
+    args: [
+      "--no-sandbox",
+      "--headless",
+      "--disable-gpu",
+      "--window-size=1920x1080",
+    ],
+  })
+  .then(async (browser) => {
+    const page = await browser.newPage();
+    await page.goto("https://accounts.google.com/");
 
-  await page.waitForSelector('input[type="email"]');
-  await page.click('input[type="email"]');
-  await page.type('input[type="email"]', "login@gmail.com");
+    await page.waitForSelector('input[type="email"]');
+    await page.click('input[type="email"]');
+    await page.type('input[type="email"]', "login@gmail.com");
 
-  await page.waitForSelector("#identifierNext");
-  await page.click("#identifierNext");
-  await page.waitFor(500);
+    await page.waitForSelector("#identifierNext");
+    await page.click("#identifierNext");
+    await page.waitFor(500);
 
-  await page.waitForSelector('input[type="password"]');
-  await page.click('input[type="password"]');
-  await page.waitFor(500);
-  await page.type('input[type="password"]', "pass");
+    await page.waitForSelector('input[type="password"]');
+    //await page.click('input[type="password"]');
+    await page.evaluate(() => {
+      document.querySelector('input[type="password"]').click();
+    });
+    await page.waitFor(2500);
+    await page.type('input[type="password"]', "pass");
 
-  await page.waitForSelector("#passwordNext");
-  await page.click("#passwordNext");
+    await page.waitFor(500);
+    await page.waitForSelector("#passwordNext");
+    await page.click("#passwordNext");
+    console.log("logged");
+    await page.waitFor(2500);
 
-  //await page.goto("https://www.youtube.com/music_policies?nv=1");
-  //await page.screenshot({ path: "testresult.png", fullPage: true });
-  //   await page.waitForSelector('input[type="text"]');
-  //   await page.click('input[type="text"]');
-  //   await page.waitFor(500);
-  //   await page.type('input[type="text"]', "Dustkey - Your Letter");
+    await page.goto("https://www.youtube.com/music_policies?nv=1");
+    console.log("redirected");
+    await page.waitFor(5000);
 
-  //   await page.goto("https://bot.sannysoft.com");
-  //   await page.waitFor(5000);
-  //   await page.screenshot({ path: "testresult.png", fullPage: true });
-  await browser.close();
-  //   console.log(`All done, check the screenshot. ✨`);
-});
+    await page.waitForSelector('input[type="text"]');
+    await page.evaluate(() => {
+      document.querySelector('input[type="text"]').click();
+    });
+    await page.type('input[type="text"]', "Dustkey - Your Letter");
+    await page.screenshot({ path: "testresult.png", fullPage: true });
+    console.log("screenshoted");
+
+    //   await page.goto("https://bot.sannysoft.com");
+    //   await page.waitFor(5000);
+    //   await page.screenshot({ path: "testresult.png", fullPage: true });
+    //await browser.close();
+    //   console.log(`All done, check the screenshot. ✨`);
+  });
