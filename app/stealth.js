@@ -1,13 +1,14 @@
-const dotenv = require("dotenv");
-dotenv.config();
-console.log(`Your port is ${process.env.PORT}`); // 8626
-
 // puppeteer-extra is a drop-in replacement for puppeteer,
 // it augments the installed puppeteer with plugin functionality
 const puppeteer = require("puppeteer-extra");
 
 // add stealth plugin and use defaults (all evasion techniques)
 const StealthPlugin = require("puppeteer-extra-plugin-stealth");
+
+// get our data from env config
+const { login, password, port } = require("./config");
+console.log(port);
+
 puppeteer.use(StealthPlugin());
 
 // puppeteer usage as normal
@@ -26,7 +27,7 @@ puppeteer
 
     await page.waitForSelector('input[type="email"]');
     await page.click('input[type="email"]');
-    await page.type('input[type="email"]', "log@gmail.com");
+    await page.type('input[type="email"]', login);
 
     await page.waitForSelector("#identifierNext");
     await page.click("#identifierNext");
@@ -38,7 +39,7 @@ puppeteer
       document.querySelector('input[type="password"]').click();
     });
     await page.waitFor(2500);
-    await page.type('input[type="password"]', "pass");
+    await page.type('input[type="password"]', password);
 
     await page.waitFor(500);
     await page.waitForSelector("#passwordNext");
