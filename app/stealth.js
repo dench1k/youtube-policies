@@ -48,11 +48,11 @@ puppeteer
 
     //await page.waitForSelector(".title-input");
     await page.evaluate(() => {
-      document.querySelectorAll(".yt-alert-message > a")[1].click();
+      document.querySelector('input[maxlength="80"]').click();
     });
     console.log("clicked");
     await page.waitFor(2500);
-    //await page.type(".title-input", "Dustkey - Your Letter");
+    await page.type('input[maxlength="80"]', "Dustkey - Your Letter");
     await page.screenshot({ path: "testresult.png", fullPage: true });
     console.log("screenshoted");
 
