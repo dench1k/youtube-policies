@@ -1,3 +1,7 @@
+const dotenv = require("dotenv");
+dotenv.config();
+console.log(`Your port is ${process.env.PORT}`); // 8626
+
 // puppeteer-extra is a drop-in replacement for puppeteer,
 // it augments the installed puppeteer with plugin functionality
 const puppeteer = require("puppeteer-extra");
