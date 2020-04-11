@@ -51,6 +51,10 @@ puppeteer
     console.log("clicked");
     await page.waitFor(2500);
     await page.type('input[maxlength="80"]', "Dustkey - Your Letter");
+    await page.waitFor(2500);
+    await page.keyboard.press(String.fromCharCode(13));
+
+    await page.waitFor(5000);
     await page.screenshot({ path: "testresult.png", fullPage: true });
     console.log("screenshoted");
 
