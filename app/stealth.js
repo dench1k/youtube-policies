@@ -7,6 +7,7 @@ const StealthPlugin = require("puppeteer-extra-plugin-stealth");
 puppeteer.use(StealthPlugin());
 
 // puppeteer usage as normal
+
 puppeteer
   .launch({
     args: [
@@ -52,7 +53,13 @@ puppeteer
     await page.waitFor(2500);
     await page.type('input[maxlength="80"]', "Dustkey - Your Letter");
     await page.waitFor(2500);
-    await page.keyboard.press(String.fromCharCode(13));
+    await page.evaluate(() => {
+      document.querySelector('input[maxlength="80"]').click();
+    });
+    await page.waitFor(2500);
+    await page.evaluate(() => {
+      document.querySelector(".search-icon").click();
+    });
 
     await page.waitFor(5000);
     await page.screenshot({ path: "testresult.png", fullPage: true });

@@ -1,49 +1,65 @@
-const puppeteer = require("puppeteer");
+// puppeteer-extra is a drop-in replacement for puppeteer,
+// it augments the installed puppeteer with plugin functionality
+const puppeteer = require("puppeteer-extra");
 
-(async () => {
-  //const browser = await puppeteer.launch();
-  const browser = await puppeteer.launch({
+// add stealth plugin and use defaults (all evasion techniques)
+const StealthPlugin = require("puppeteer-extra-plugin-stealth");
+puppeteer.use(StealthPlugin());
+
+// puppeteer usage as normal
+
+puppeteer
+  .launch({
     headless: false,
     slowMo: 250, // slow down by 250ms
+  })
+  .then(async (browser) => {
+    const page = await browser.newPage();
+    await page.goto("https://accounts.google.com/");
+
+    await page.waitForSelector('input[type="email"]');
+    await page.click('input[type="email"]');
+    await page.type('input[type="email"]', process.env.LOGIN);
+
+    await page.waitForSelector("#identifierNext");
+    await page.click("#identifierNext");
+    await page.waitFor(500);
+
+    await page.waitForSelector('input[type="password"]');
+    await page.evaluate(() => {
+      document.querySelector('input[type="password"]').click();
+    });
+    await page.waitFor(2500);
+    await page.type('input[type="password"]', process.env.PASSWORD);
+
+    await page.waitFor(500);
+    await page.waitForSelector("#passwordNext");
+    await page.click("#passwordNext");
+    console.log("logged");
+    await page.waitFor(2500);
+
+    await page.goto("https://www.youtube.com/music_policies?nv=1");
+    console.log("redirected");
+    await page.waitFor(5000);
+
+    await page.evaluate(() => {
+      document.querySelector('input[maxlength="80"]').click();
+    });
+    console.log("clicked");
+    await page.waitFor(2500);
+    await page.type('input[maxlength="80"]', "Dustkey - Your Letter");
+    await page.waitFor(2500);
+    await page.evaluate(() => {
+      document.querySelector('input[maxlength="80"]').click();
+    });
+    await page.waitFor(2500);
+    await page.evaluate(() => {
+      document.querySelector(".search-icon").click();
+    });
+
+    await page.waitFor(5000);
+    await page.screenshot({ path: "testresult.png", fullPage: true });
+    console.log("screenshoted");
+
+    await browser.close();
   });
-  const page = await browser.newPage();
-  const navigationPromise = page.waitForNavigation();
-
-  await page.goto("https://accounts.google.com/");
-
-  await navigationPromise;
-
-  await page.waitForSelector('input[type="email"]');
-  await page.click('input[type="email"]');
-
-  await navigationPromise;
-
-  //TODO : change to your email
-  await page.type('input[type="email"]', "login@gmail.com");
-  await page.waitForSelector("#identifierNext");
-  await page.click("#identifierNext");
-
-  await page.waitFor(500);
-
-  await page.waitForSelector('input[type="password"]');
-  await page.click('input[type="email"]');
-  await page.waitFor(500);
-  //TODO : change to your password
-  await page.type('input[type="password"]', "password");
-
-  await page.waitForSelector("#passwordNext");
-  await page.click("#passwordNext");
-
-  await navigationPromise;
-
-  // const h1 = await page.evaluate(
-  //   () => document.querySelector("h2").textContent
-  // );
-  //const link = await page.$("input[type=email]");
-  //const text = await (await link.getProperty("id")).jsonValue();
-
-  //console.log(h1);
-  //console.log(text);
-
-  await browser.close();
-})();
