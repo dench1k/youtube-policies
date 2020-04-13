@@ -51,19 +51,20 @@ puppeteer
     });
     console.log("clicked");
     await page.waitFor(2500);
-    await page.type('input[maxlength="80"]', "Dustkey - Your Letter");
+
+    await page.type('input[maxlength="80"]', "Loadstar - Once Again");
+    console.log("typed");
     await page.waitFor(2500);
-    await page.evaluate(() => {
-      document.querySelector('input[maxlength="80"]').click();
-    });
-    await page.waitFor(2500);
+
     await page.evaluate(() => {
       document.querySelector(".search-icon").click();
     });
-
-    await page.waitFor(5000);
+    console.log("clicked icon");
+    await page.waitFor(10000);
+    await page.type('input[maxlength="80"]', "egz");
+    console.log("typed egz");
     await page.screenshot({ path: "testresult.png", fullPage: true });
     console.log("screenshoted");
-
+    await page.waitFor(2500);
     await browser.close();
   });
