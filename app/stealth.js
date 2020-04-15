@@ -61,10 +61,18 @@ puppeteer
     });
     console.log("clicked icon");
     await page.waitFor(10000);
-    await page.type('input[maxlength="80"]', "egz");
-    console.log("typed egz");
+
+    await page.evaluate(() => {
+      document
+        .querySelector(".track-list li:nth-child(2) .audiolibrary-track-head")
+        .click();
+    });
+    console.log("clicked li");
+    await page.waitFor(2500);
+
     await page.screenshot({ path: "testresult.png", fullPage: true });
     console.log("screenshoted");
     await page.waitFor(2500);
+
     await browser.close();
   });
