@@ -24,27 +24,34 @@ puppeteer
       await page.type('input[type="email"]', process.env.LOGIN);
     };
     
-    const clickIdentifierNext = () => {
+    const clickEmailNext = () => {
       await page.waitForSelector("#identifierNext");
       await page.click("#identifierNext");
       await page.waitFor(500);
     }
 
+    const fillPassword = () => {
+      await page.waitForSelector('input[type="password"]');
+      await page.evaluate(() => {
+        document.querySelector('input[type="password"]').click();
+      });
+      await page.waitFor(2500);
+      await page.type('input[type="password"]', process.env.PASSWORD);
+    }
+
+    const clickPasswordNext = () => {
+      await page.waitForSelector("#passwordNext");
+      await page.click("#passwordNext");
+      console.log("logged");
+      await page.waitFor(2500);
+    }
+
     fillEmail();
-    clickIdentifierNext();
-
-    await page.waitForSelector('input[type="password"]');
-    await page.evaluate(() => {
-      document.querySelector('input[type="password"]').click();
-    });
-    await page.waitFor(2500);
-    await page.type('input[type="password"]', process.env.PASSWORD);
-
-    await page.waitFor(500);
-    await page.waitForSelector("#passwordNext");
-    await page.click("#passwordNext");
-    console.log("logged");
-    await page.waitFor(2500);
+    clickEmailNext();
+    fillPassword();
+    clickPasswordNext();
+    
+    
 
     await page.goto("https://www.youtube.com/music_policies?nv=1");
     console.log("redirected");
