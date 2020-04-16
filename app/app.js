@@ -15,15 +15,23 @@ puppeteer
   })
   .then(async (browser) => {
     const page = await browser.newPage();
+
     await page.goto("https://accounts.google.com/");
 
-    await page.waitForSelector('input[type="email"]');
-    await page.click('input[type="email"]');
-    await page.type('input[type="email"]', process.env.LOGIN);
+    const fillEmail = () => {
+      await page.waitForSelector('input[type="email"]');
+      await page.click('input[type="email"]');
+      await page.type('input[type="email"]', process.env.LOGIN);
+    };
+    
+    const clickIdentifierNext = () => {
+      await page.waitForSelector("#identifierNext");
+      await page.click("#identifierNext");
+      await page.waitFor(500);
+    }
 
-    await page.waitForSelector("#identifierNext");
-    await page.click("#identifierNext");
-    await page.waitFor(500);
+    fillEmail();
+    clickIdentifierNext();
 
     await page.waitForSelector('input[type="password"]');
     await page.evaluate(() => {
