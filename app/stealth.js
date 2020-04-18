@@ -49,6 +49,7 @@ puppeteer
     await page.evaluate(() => {
       document.querySelector('input[maxlength="80"]').click();
     });
+
     console.log("clicked");
     await page.waitFor(2500);
 
