@@ -82,6 +82,19 @@ puppeteer
     let resultsArray = await page.$$(".track-list > li");
     let results = [];
 
+    // for infinite scroll
+    // let lastResultArrayLength = 0;
+    // while (resultsArray.length < count) {
+    //   await page.evaluate(`window.scrollTo(0, document.body.scrollHeight)`);
+    //   await page.waitFor(3000);
+
+    //   resultsArray = await page.$$(".track-list > li");
+
+    //   if (lastResultArrayLength === resultsArray.length) break;
+
+    //   lastResultArrayLength = resultsArray.length;
+    // }
+
     for (let resultElement of resultsArray) {
       let title = await resultElement.$eval(
         ".audiolibrary-column-title",
