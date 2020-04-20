@@ -56,6 +56,8 @@ puppeteer
     await page.goto("https://www.youtube.com/music_policies?nv=1");
     console.log("redirected");
 
+    let url = await page.url();
+    console.log(url);
     await page.evaluate(() => {
       document.querySelector('input[maxlength="80"]').click();
     });
@@ -75,11 +77,27 @@ puppeteer
     console.log("clicked icon");
     await page.waitFor(10000);
 
+    // search results
+    await page.waitFor(".track-list");
+    let resultsArray = await page.$$(".track-list > li");
+    let results = [];
+
+    for (let resultElement of resultsArray) {
+      let title = await resultElement.$eval(
+        ".audiolibrary-column-title",
+        (element) => element.innerText
+      );
+      results.push(title);
+    }
+
+    console.log(results);
+
     await page.evaluate(() => {
       document
         .querySelector(".track-list li:nth-child(2) .audiolibrary-track-head")
         .click();
     });
+
     console.log("clicked li");
     await page.waitFor(2500);
 
