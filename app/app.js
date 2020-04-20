@@ -11,7 +11,7 @@ puppeteer.use(StealthPlugin());
 puppeteer
   .launch({
     headless: false,
-    slowMo: 250, // slow down by 250ms
+    slowMo: 150, // slow down by ${number}ms
   })
   .then(async (browser) => {
     const page = await browser.newPage();
