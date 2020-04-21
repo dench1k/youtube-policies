@@ -80,6 +80,7 @@ puppeteer
     // search results
     await page.waitFor(".track-list");
     let resultsArray = await page.$$(".track-list > li");
+    let counter = 1;
     let results = [];
     const tracklist = [
       {
@@ -101,6 +102,7 @@ puppeteer
     // }
 
     for (let resultElement of resultsArray) {
+      console.log(counter);
       let artist = await resultElement.$eval(
         ".audiolibrary-column-artist",
         (element) => element.innerText
@@ -111,21 +113,22 @@ puppeteer
       );
 
       if (artist === tracklist[0].artist && title === tracklist[0].title) {
-        console.log("egz");
+        await page.evaluate(() => {
+          document
+            .querySelector(
+              ".track-list li:nth-child(2) .audiolibrary-track-head"
+            )
+            .click();
+        });
+
+        console.log("clicked li");
+        await page.waitFor(2500);
       }
       results.push(title);
+      counter++;
     }
 
     console.log(results);
-
-    await page.evaluate(() => {
-      document
-        .querySelector(".track-list li:nth-child(2) .audiolibrary-track-head")
-        .click();
-    });
-
-    console.log("clicked li");
-    await page.waitFor(2500);
 
     await page.screenshot({ path: "testresult.png", fullPage: true });
     console.log("screenshoted");
