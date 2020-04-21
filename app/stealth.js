@@ -65,7 +65,7 @@ puppeteer
     console.log("clicked");
     await page.waitFor(2500);
 
-    await page.type('input[maxlength="80"]', "Netsky - Come Alive", {
+    await page.type('input[maxlength="80"]', "Loadstar - Once Again", {
       delay: 50,
     });
     console.log("typed");
@@ -81,7 +81,12 @@ puppeteer
     await page.waitFor(".track-list");
     let resultsArray = await page.$$(".track-list > li");
     let results = [];
-
+    const tracklist = [
+      {
+        artist: "Loadstar",
+        title: "Once Again",
+      },
+    ];
     // for infinite scroll
     // let lastResultArrayLength = 0;
     // while (resultsArray.length < count) {
@@ -96,10 +101,18 @@ puppeteer
     // }
 
     for (let resultElement of resultsArray) {
+      let artist = await resultElement.$eval(
+        ".audiolibrary-column-artist",
+        (element) => element.innerText
+      );
       let title = await resultElement.$eval(
         ".audiolibrary-column-title",
         (element) => element.innerText
       );
+
+      if (artist === tracklist[0].artist && title === tracklist[0].title) {
+        console.log("egz");
+      }
       results.push(title);
     }
 
