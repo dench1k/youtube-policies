@@ -16,10 +16,11 @@ puppeteer
   .then(async (browser) => {
     const page = await browser.newPage();
     await page.goto("https://accounts.google.com/");
+
     const fillEmail = async () => {
       await page.waitForSelector('input[type="email"]');
       await page.click('input[type="email"]');
-      await page.type('input[type="email"]', process.env.LOGIN);
+      await page.type('input[type="email"]', process.env.LOGIN, { delay: 50 });
     };
     const clickEmailNext = async () => {
       await page.waitForSelector("#identifierNext");
@@ -32,7 +33,9 @@ puppeteer
         document.querySelector('input[type="password"]').click();
       });
       await page.waitFor(2500);
-      await page.type('input[type="password"]', process.env.PASSWORD);
+      await page.type('input[type="password"]', process.env.PASSWORD, {
+        delay: 50,
+      });
       await page.waitFor(500);
     };
     const clickPasswordNext = async () => {
@@ -46,18 +49,21 @@ puppeteer
     await clickEmailNext();
     await fillPassword();
     await clickPasswordNext();
-
     await page.goto("https://www.youtube.com/music_policies?nv=1");
     console.log("redirected");
-    await page.waitFor(5000);
 
+    let url = await page.url();
+    console.log(url);
     await page.evaluate(() => {
       document.querySelector('input[maxlength="80"]').click();
     });
+
     console.log("clicked");
     await page.waitFor(2500);
 
-    await page.type('input[maxlength="80"]', "Loadstar - Once Again");
+    await page.type('input[maxlength="80"]', "Loadstar - Once Again", {
+      delay: 50,
+    });
     console.log("typed");
     await page.waitFor(2500);
 
@@ -67,13 +73,55 @@ puppeteer
     console.log("clicked icon");
     await page.waitFor(10000);
 
-    await page.evaluate(() => {
-      document
-        .querySelector(".track-list li:nth-child(2) .audiolibrary-track-head")
-        .click();
-    });
-    console.log("clicked li");
-    await page.waitFor(2500);
+    // search results
+    await page.waitFor(".track-list");
+    let resultsArray = await page.$$(".track-list > li");
+    let results = [];
+    const tracklist = [
+      {
+        artist: "Loadstar",
+        title: "Once Again",
+      },
+    ];
+    // for infinite scroll
+    // let lastResultArrayLength = 0;
+    // while (resultsArray.length < count) {
+    //   await page.evaluate(`window.scrollTo(0, document.body.scrollHeight)`);
+    //   await page.waitFor(3000);
+
+    //   resultsArray = await page.$$(".track-list > li");
+
+    //   if (lastResultArrayLength === resultsArray.length) break;
+
+    //   lastResultArrayLength = resultsArray.length;
+    // }
+
+    for (let resultElement of resultsArray) {
+      let artist = await resultElement.$eval(
+        ".audiolibrary-column-artist",
+        (element) => element.innerText
+      );
+      let title = await resultElement.$eval(
+        ".audiolibrary-column-title",
+        (element) => element.innerText
+      );
+
+      if (artist === tracklist[0].artist && title === tracklist[0].title) {
+        await page.evaluate(() => {
+          document
+            .querySelector(
+              ".track-list li:nth-child(2) .audiolibrary-track-head"
+            )
+            .click();
+        });
+
+        console.log("clicked li");
+        await page.waitFor(2500);
+      }
+      results.push(title);
+    }
+
+    console.log(results);
 
     await page.screenshot({ path: "testresult.png", fullPage: true });
     console.log("screenshoted");

@@ -80,7 +80,6 @@ puppeteer
     // search results
     await page.waitFor(".track-list");
     let resultsArray = await page.$$(".track-list > li");
-    let counter = 1;
     let results = [];
     const tracklist = [
       {
@@ -102,7 +101,6 @@ puppeteer
     // }
 
     for (let resultElement of resultsArray) {
-      console.log(counter);
       let artist = await resultElement.$eval(
         ".audiolibrary-column-artist",
         (element) => element.innerText
@@ -125,7 +123,6 @@ puppeteer
         await page.waitFor(2500);
       }
       results.push(title);
-      counter++;
     }
 
     console.log(results);
