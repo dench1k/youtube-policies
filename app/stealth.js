@@ -61,19 +61,19 @@ puppeteer
     });
 
     console.log("clicked");
-    await page.waitFor(500);
+    await page.waitFor(1000);
 
     await page.type('input[maxlength="80"]', "Loadstar - Once Again", {
       delay: 50,
     });
     console.log("typed");
-    await page.waitFor(2600);
+    await page.waitFor(3000);
 
     await page.evaluate(() => {
       document.querySelector(".search-icon").click();
     });
     console.log("clicked icon");
-    await page.waitFor(9000);
+    await page.waitFor(10000);
 
     // search results
     await page.waitFor(".track-list");
@@ -98,7 +98,7 @@ puppeteer
     //   lastResultArrayLength = resultsArray.length;
     // }
 
-    for (let resultElement of resultsArray) {
+    for (let [index, resultElement] of resultsArray.entries()) {
       let artist = await resultElement.$eval(
         ".audiolibrary-column-artist",
         (element) => element.innerText
@@ -109,15 +109,15 @@ puppeteer
       );
 
       if (artist === tracklist[0].artist && title === tracklist[0].title) {
-        await page.evaluate(() => {
-          let num = 2;
+        await page.evaluate((i) => {
+          let num = i;
           console.log(num);
           document
             .querySelector(
               `.track-list li:nth-child(${num}) .audiolibrary-track-head`
             )
             .click();
-        });
+        }, index);
 
         console.log("clicked li");
         await page.waitFor(1000);
