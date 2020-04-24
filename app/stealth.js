@@ -29,24 +29,24 @@ puppeteer
     const clickEmailNext = async () => {
       await page.waitForSelector("#identifierNext");
       await page.click("#identifierNext");
-      await page.waitFor(500);
+      await page.waitFor(250);
     };
     const fillPassword = async () => {
       await page.waitForSelector('input[type="password"]');
       await page.evaluate(() => {
         document.querySelector('input[type="password"]').click();
       });
-      await page.waitFor(2500);
+      await page.waitFor(1000);
       await page.type('input[type="password"]', process.env.PASSWORD, {
         delay: 50,
       });
-      await page.waitFor(500);
+      await page.waitFor(250);
     };
     const clickPasswordNext = async () => {
       await page.waitForSelector("#passwordNext");
       await page.click("#passwordNext");
       console.log("logged");
-      await page.waitFor(2500);
+      await page.waitFor(1000);
     };
 
     await fillEmail();
@@ -56,26 +56,24 @@ puppeteer
     await page.goto("https://www.youtube.com/music_policies?nv=1");
     console.log("redirected");
 
-    let url = await page.url();
-    console.log(url);
     await page.evaluate(() => {
       document.querySelector('input[maxlength="80"]').click();
     });
 
     console.log("clicked");
-    await page.waitFor(2500);
+    await page.waitFor(500);
 
     await page.type('input[maxlength="80"]', "Loadstar - Once Again", {
       delay: 50,
     });
     console.log("typed");
-    await page.waitFor(2500);
+    await page.waitFor(2600);
 
     await page.evaluate(() => {
       document.querySelector(".search-icon").click();
     });
     console.log("clicked icon");
-    await page.waitFor(10000);
+    await page.waitFor(9000);
 
     // search results
     await page.waitFor(".track-list");
@@ -112,15 +110,17 @@ puppeteer
 
       if (artist === tracklist[0].artist && title === tracklist[0].title) {
         await page.evaluate(() => {
+          let num = 2;
+          console.log(num);
           document
             .querySelector(
-              ".track-list li:nth-child(2) .audiolibrary-track-head"
+              `.track-list li:nth-child(${num}) .audiolibrary-track-head`
             )
             .click();
         });
 
         console.log("clicked li");
-        await page.waitFor(2500);
+        await page.waitFor(1000);
       }
       results.push(title);
     }
@@ -129,7 +129,7 @@ puppeteer
 
     await page.screenshot({ path: "testresult.png", fullPage: true });
     console.log("screenshoted");
-    await page.waitFor(2500);
+    await page.waitFor(1000);
 
     await browser.close();
   });
