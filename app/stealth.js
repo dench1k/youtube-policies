@@ -84,7 +84,25 @@ puppeteer
         artist: "Loadstar",
         title: "Once Again",
       },
+      {
+        artist: "Milkyway",
+        title: "Fairy Tale",
+      },
+      {
+        artist: "Random Movement",
+        title: "Lake Escape",
+      },
     ];
+
+    // isBanned
+    // .track-content .asset-not-available-text
+
+    // isOk
+    // !(.track-content .asset-not-available-text)
+
+    // isMissing
+    // .track-content.no-results
+
     // for infinite scroll
     // let lastResultArrayLength = 0;
     // while (resultsArray.length < count) {
@@ -126,7 +144,9 @@ puppeteer
     }
 
     console.log(results);
-
+    await page.evaluate(() => {
+      document.querySelector('input[maxlength="80"]').value = "";
+    });
     await page.screenshot({ path: "testresult.png", fullPage: true });
     console.log("screenshoted");
     await page.waitFor(1000);
