@@ -76,9 +76,7 @@ puppeteer
         document.querySelector('input[maxlength="80"]').click();
       });
 
-      console.log("clicked");
       await page.waitFor(1000);
-      console.log(`${tracklist[index].artist} - ${tracklist[index].title}`);
       await page.type(
         'input[maxlength="80"]',
         `${tracklist[index].artist} - ${tracklist[index].title}`,
@@ -92,7 +90,7 @@ puppeteer
       await page.evaluate(() => {
         document.querySelector(".search-icon").click();
       });
-      console.log("clicked icon");
+      console.log("clicked search icon");
       await page.waitFor(10000);
 
       // search results
@@ -121,7 +119,7 @@ puppeteer
 
       //   lastResultArrayLength = resultsArray.length;
       // }
-
+      console.log("Entering for loop");
       for (let [index, resultElement] of resultsArray.entries()) {
         let artist = await resultElement.$eval(
           ".audiolibrary-column-artist",
@@ -131,13 +129,19 @@ puppeteer
           ".audiolibrary-column-title",
           (element) => element.innerText
         );
-
+        console.log(`=========`);
+        console.log(`Elem : ${artist} - ${title}`);
+        console.log(`=========`);
+        console.log(
+          `Tracklist : ${tracklist[index].artist} - ${tracklist[index].title}`
+        );
+        console.log(`=========`);
         if (
           artist === tracklist[index].artist &&
           title === tracklist[index].title
         ) {
           await page.evaluate((i) => {
-            let num = i;
+            let num = i + 1;
             console.log(num);
             document
               .querySelector(
