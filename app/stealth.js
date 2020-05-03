@@ -120,7 +120,7 @@ puppeteer
       //   lastResultArrayLength = resultsArray.length;
       // }
       console.log("Entering for loop");
-      for (let [index, resultElement] of resultsArray.entries()) {
+      for (let [resultIndex, resultElement] of resultsArray.entries()) {
         let artist = await resultElement.$eval(
           ".audiolibrary-column-artist",
           (element) => element.innerText
@@ -148,7 +148,7 @@ puppeteer
                 `.track-list li:nth-child(${num}) .audiolibrary-track-head`
               )
               .click();
-          }, index);
+          }, resultIndex);
 
           console.log("clicked li");
           await page.waitFor(1000);
@@ -157,11 +157,11 @@ puppeteer
       }
 
       console.log(results);
+      await page.screenshot({ path: `testresult${index}.png`, fullPage: true });
+      console.log("screenshoted");
       await page.evaluate(() => {
         document.querySelector('input[maxlength="80"]').value = "";
       });
-      await page.screenshot({ path: `testresult${index}.png`, fullPage: true });
-      console.log("screenshoted");
       await page.waitFor(1000);
     }
 
