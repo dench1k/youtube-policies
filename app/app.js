@@ -14,35 +14,51 @@ puppeteer
     slowMo: 150, // slow down by ${number}ms
   })
   .then(async (browser) => {
+    const tracklist = [
+      {
+        artist: "Loadstar",
+        title: "Once Again",
+      },
+      {
+        artist: "Milkyway",
+        title: "Fairy Tale",
+      },
+      {
+        artist: "Random Movement",
+        title: "Lake Escape",
+      },
+    ];
     const page = await browser.newPage();
     await page.goto("https://accounts.google.com/");
 
     const fillEmail = async () => {
       await page.waitForSelector('input[type="email"]');
       await page.click('input[type="email"]');
-      await page.type('input[type="email"]', process.env.LOGIN, { delay: 50 });
+      await page.type('input[type="email"]', process.env.LOGIN, {
+        delay: 50,
+      });
     };
     const clickEmailNext = async () => {
       await page.waitForSelector("#identifierNext");
       await page.click("#identifierNext");
-      await page.waitFor(500);
+      await page.waitFor(250);
     };
     const fillPassword = async () => {
       await page.waitForSelector('input[type="password"]');
       await page.evaluate(() => {
         document.querySelector('input[type="password"]').click();
       });
-      await page.waitFor(2500);
+      await page.waitFor(1000);
       await page.type('input[type="password"]', process.env.PASSWORD, {
         delay: 50,
       });
-      await page.waitFor(500);
+      await page.waitFor(250);
     };
     const clickPasswordNext = async () => {
       await page.waitForSelector("#passwordNext");
       await page.click("#passwordNext");
       console.log("logged");
-      await page.waitFor(2500);
+      await page.waitFor(1000);
     };
 
     await fillEmail();
@@ -52,80 +68,105 @@ puppeteer
     await page.goto("https://www.youtube.com/music_policies?nv=1");
     console.log("redirected");
 
-    let url = await page.url();
-    console.log(url);
-    await page.evaluate(() => {
-      document.querySelector('input[maxlength="80"]').click();
-    });
+    for ([index, track] of tracklist.entries()) {
+      console.log(index, track);
 
-    console.log("clicked");
-    await page.waitFor(2500);
+      await page.evaluate(() => {
+        document.querySelector('input[maxlength="80"]').click();
+      });
 
-    await page.type('input[maxlength="80"]', "Loadstar - Once Again", {
-      delay: 50,
-    });
-    console.log("typed");
-    await page.waitFor(2500);
-
-    await page.evaluate(() => {
-      document.querySelector(".search-icon").click();
-    });
-    console.log("clicked icon");
-    await page.waitFor(10000);
-
-    // search results
-    await page.waitFor(".track-list");
-    let resultsArray = await page.$$(".track-list > li");
-    let results = [];
-    const tracklist = [
-      {
-        artist: "Loadstar",
-        title: "Once Again",
-      },
-    ];
-    // for infinite scroll
-    // let lastResultArrayLength = 0;
-    // while (resultsArray.length < count) {
-    //   await page.evaluate(`window.scrollTo(0, document.body.scrollHeight)`);
-    //   await page.waitFor(3000);
-
-    //   resultsArray = await page.$$(".track-list > li");
-
-    //   if (lastResultArrayLength === resultsArray.length) break;
-
-    //   lastResultArrayLength = resultsArray.length;
-    // }
-
-    for (let resultElement of resultsArray) {
-      let artist = await resultElement.$eval(
-        ".audiolibrary-column-artist",
-        (element) => element.innerText
+      await page.waitFor(1000);
+      await page.type(
+        'input[maxlength="80"]',
+        `${tracklist[index].artist} - ${tracklist[index].title}`,
+        {
+          delay: 50,
+        }
       );
-      let title = await resultElement.$eval(
-        ".audiolibrary-column-title",
-        (element) => element.innerText
-      );
+      console.log("typed");
+      await page.waitFor(3000);
 
-      if (artist === tracklist[0].artist && title === tracklist[0].title) {
-        await page.evaluate(() => {
-          document
-            .querySelector(
-              ".track-list li:nth-child(2) .audiolibrary-track-head"
-            )
-            .click();
-        });
+      await page.evaluate(() => {
+        document.querySelector(".search-icon").click();
+      });
+      console.log("clicked search icon");
+      //await page.waitFor(10000);
 
-        console.log("clicked li");
-        await page.waitFor(2500);
+      // search results
+      await page.waitForSelector(".track-list.sorting");
+      await page.waitFor(1000);
+      let resultsArray = await page.$$(".track-list > li");
+      let results = [];
+
+      // isBanned
+      // .track-content .asset-not-available-text
+
+      // isOk
+      // !(.track-content .asset-not-available-text)
+
+      // isMissing
+      // .track-content.no-results
+
+      // for infinite scroll
+      // let lastResultArrayLength = 0;
+      // while (resultsArray.length < count) {
+      //   await page.evaluate(`window.scrollTo(0, document.body.scrollHeight)`);
+      //   await page.waitFor(3000);
+
+      //   resultsArray = await page.$$(".track-list > li");
+
+      //   if (lastResultArrayLength === resultsArray.length) break;
+
+      //   lastResultArrayLength = resultsArray.length;
+      // }
+      console.log("Entering for loop");
+      for (let [resultIndex, resultElement] of resultsArray.entries()) {
+        let artist = await resultElement.$eval(
+          ".audiolibrary-column-artist",
+          (element) => element.innerText
+        );
+        let title = await resultElement.$eval(
+          ".audiolibrary-column-title",
+          (element) => element.innerText
+        );
+        console.log(`=========`);
+        console.log(`Elem : ${artist} - ${title}`);
+        console.log(`=========`);
+        console.log(
+          `Tracklist : ${tracklist[index].artist} - ${tracklist[index].title}`
+        );
+        console.log(`=========`);
+        if (
+          artist === tracklist[index].artist &&
+          title === tracklist[index].title
+        ) {
+          await page.evaluate((i) => {
+            let num = i + 1;
+            console.log(num);
+            document
+              .querySelector(
+                `.track-list li:nth-child(${num}) .audiolibrary-track-head`
+              )
+              .click();
+          }, resultIndex);
+
+          console.log("clicked li");
+          await page.waitFor(1000);
+        }
+        results.push(title);
       }
-      results.push(title);
+
+      console.log(results);
+      await page.screenshot({
+        path: `testresult${index}.png`,
+        fullPage: true,
+      });
+      console.log("screenshoted");
+      await page.evaluate(() => {
+        document.querySelector('input[maxlength="80"]').value = "";
+      });
+      await page.waitFor(1000);
     }
-
-    console.log(results);
-
-    await page.screenshot({ path: "testresult.png", fullPage: true });
-    console.log("screenshoted");
-    await page.waitFor(2500);
 
     await browser.close();
   });
