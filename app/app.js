@@ -11,7 +11,7 @@ puppeteer.use(StealthPlugin());
 puppeteer
   .launch({
     headless: false,
-    slowMo: 150, // slow down by ${number}ms
+    slowMo: 50, // slow down by ${number}ms
   })
   .then(async (browser) => {
     const tracklist = [
