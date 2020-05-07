@@ -26,9 +26,41 @@ const youtube = {
     });
     page = await browser.newPage();
   },
-
-  login: async (username, password) => {
+  fillEmail: async (email) => {
+    await page.waitForSelector('input[type="email"]');
+    await page.click('input[type="email"]');
+    await page.type('input[type="email"]', email, {
+      delay: 50,
+    });
+  },
+  clickEmailNext: async () => {
+    await page.waitForSelector("#identifierNext");
+    await page.click("#identifierNext");
+    await page.waitFor(250);
+  },
+  fillPassword: async (password) => {
+    await page.waitForSelector('input[type="password"]');
+    await page.evaluate(() => {
+      document.querySelector('input[type="password"]').click();
+    });
+    await page.waitFor(1000);
+    await page.type('input[type="password"]', process.env.PASSWORD, {
+      delay: 50,
+    });
+    await page.waitFor(250);
+  },
+  clickPasswordNext: async () => {
+    await page.waitForSelector("#passwordNext");
+    await page.click("#passwordNext");
+    await page.waitFor(1000);
+  },
+  login: async (email, password) => {
     await page.goto(LOGIN_URL);
+    await fillEmail(email);
+    await clickEmailNext();
+    await fillPassword(password);
+    await clickPasswordNext();
+    console.log("logged");
   },
 
   end: async () => {
