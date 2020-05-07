@@ -27,31 +27,35 @@ const youtube = {
     page = await browser.newPage();
   },
   fillEmail: async (email) => {
-    await page.waitForSelector('input[type="email"]');
-    await page.click('input[type="email"]');
-    await page.type('input[type="email"]', email, {
+    const selectorEmail = 'input[type="email"]';
+    await page.waitForSelector(selectorEmail);
+    await page.click(selectorEmail);
+    await page.type(selectorEmail, email, {
       delay: 50,
     });
   },
   clickEmailNext: async () => {
-    await page.waitForSelector("#identifierNext");
-    await page.click("#identifierNext");
+    const selectorButton = "#identifierNext";
+    await page.waitForSelector(selectorButton);
+    await page.click(selectorButton);
     await page.waitFor(250);
   },
   fillPassword: async (password) => {
-    await page.waitForSelector('input[type="password"]');
+    const selectorPassword = 'input[type="password"]';
+    await page.waitForSelector(selectorPassword);
     await page.evaluate(() => {
-      document.querySelector('input[type="password"]').click();
+      document.querySelector(selectorPassword).click();
     });
     await page.waitFor(1000);
-    await page.type('input[type="password"]', process.env.PASSWORD, {
+    await page.type(selectorPassword, password, {
       delay: 50,
     });
     await page.waitFor(250);
   },
   clickPasswordNext: async () => {
-    await page.waitForSelector("#passwordNext");
-    await page.click("#passwordNext");
+    const selectorButton = "#passwordNext";
+    await page.waitForSelector(selectorButton);
+    await page.click(selectorButton);
     await page.waitFor(1000);
   },
   login: async (email, password) => {
