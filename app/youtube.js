@@ -45,6 +45,7 @@ const youtube = {
 
   fillPassword: async (password) => {
     console.log("filled email, now pass");
+    youtube.screenshot(`pass.png`);
     const selectorPassword = 'input[type="password"]';
     await page.waitForSelector('input[type="password"]');
     await page.evaluate(() => {
