@@ -40,6 +40,7 @@ const youtube = {
     });
     page = await browser.newPage();
   },
+
   fillEmail: async (email) => {
     const selectorEmail = 'input[type="email"]';
     await page.waitForSelector(selectorEmail);
@@ -48,12 +49,14 @@ const youtube = {
       delay: 50,
     });
   },
+
   clickEmailNext: async () => {
     const selectorButton = "#identifierNext";
     await page.waitForSelector(selectorButton);
     await page.click(selectorButton);
     await page.waitFor(250);
   },
+
   fillPassword: async (password) => {
     const selectorPassword = 'input[type="password"]';
     await page.waitForSelector(selectorPassword);
@@ -66,12 +69,14 @@ const youtube = {
     });
     await page.waitFor(250);
   },
+
   clickPasswordNext: async () => {
     const selectorButton = "#passwordNext";
     await page.waitForSelector(selectorButton);
     await page.click(selectorButton);
     await page.waitFor(1000);
   },
+
   login: async (email, password) => {
     await page.goto(LOGIN_URL);
     await fillEmail(email);
@@ -82,6 +87,7 @@ const youtube = {
     await page.goto(BASE_URL);
     console.log("redirected");
   },
+
   check: async () => {
     for ([index, track] of tracklist.entries()) {
       console.log(index, track);
@@ -122,18 +128,6 @@ const youtube = {
       // isMissing
       // .track-content.no-results
 
-      // for infinite scroll
-      // let lastResultArrayLength = 0;
-      // while (resultsArray.length < count) {
-      //   await page.evaluate(`window.scrollTo(0, document.body.scrollHeight)`);
-      //   await page.waitFor(3000);
-
-      //   resultsArray = await page.$$(".track-list > li");
-
-      //   if (lastResultArrayLength === resultsArray.length) break;
-
-      //   lastResultArrayLength = resultsArray.length;
-      // }
       console.log("Entering for loop");
       for (let [resultIndex, resultElement] of resultsArray.entries()) {
         let artist = await resultElement.$eval(
@@ -183,9 +177,21 @@ const youtube = {
       await page.waitFor(1000);
     }
   },
+
   end: async () => {
     await browser.close();
   },
 };
+// for infinite scroll
+// let lastResultArrayLength = 0;
+// while (resultsArray.length < count) {
+//   await page.evaluate(`window.scrollTo(0, document.body.scrollHeight)`);
+//   await page.waitFor(3000);
 
+//   resultsArray = await page.$$(".track-list > li");
+
+//   if (lastResultArrayLength === resultsArray.length) break;
+
+//   lastResultArrayLength = resultsArray.length;
+// }
 module.exports = youtube;
