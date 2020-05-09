@@ -46,9 +46,9 @@ const youtube = {
   fillPassword: async (password) => {
     console.log("filled email, now pass");
     const selectorPassword = 'input[type="password"]';
-    await page.waitForSelector(selectorPassword);
+    await page.waitForSelector('input[type="password"]');
     await page.evaluate(() => {
-      document.querySelector(selectorPassword).click();
+      document.querySelector('input[type="password"]').click();
     });
     await page.waitFor(1000);
     await page.type(selectorPassword, password, {
@@ -156,16 +156,22 @@ const youtube = {
       }
 
       console.log(results);
-      await page.screenshot({
-        path: `testresult${index}.png`,
-        fullPage: true,
-      });
-      console.log("screenshoted");
+
+      youtube.screenshot(`testresult${index}.png`);
+
       await page.evaluate(() => {
         document.querySelector('input[maxlength="80"]').value = "";
       });
       await page.waitFor(1000);
     }
+  },
+
+  screenshot: async (filename) => {
+    await page.screenshot({
+      path: filename,
+      fullPage: true,
+    });
+    console.log("screenshoted");
   },
 
   end: async () => {
