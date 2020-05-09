@@ -10,20 +10,6 @@ puppeteer.use(StealthPlugin());
 
 const BASE_URL = "https://www.youtube.com/music_policies?nv=1";
 const LOGIN_URL = "https://accounts.google.com/";
-const tracklist = [
-  {
-    artist: "Loadstar",
-    title: "Once Again",
-  },
-  {
-    artist: "Milkyway",
-    title: "Fairy Tale",
-  },
-  {
-    artist: "Random Movement",
-    title: "Lake Escape",
-  },
-];
 
 let browser = null;
 let page = null;
@@ -58,6 +44,7 @@ const youtube = {
   },
 
   fillPassword: async (password) => {
+    console.log("filled email, now pass");
     const selectorPassword = 'input[type="password"]';
     await page.waitForSelector(selectorPassword);
     await page.evaluate(() => {
@@ -79,16 +66,19 @@ const youtube = {
 
   login: async (email, password) => {
     await page.goto(LOGIN_URL);
-    await fillEmail(email);
-    await clickEmailNext();
-    await fillPassword(password);
-    await clickPasswordNext();
+
+    await youtube.fillEmail(email);
+    await youtube.clickEmailNext();
+    await youtube.fillPassword(password);
+    await youtube.clickPasswordNext();
+
     console.log("logged");
+
     await page.goto(BASE_URL);
     console.log("redirected");
   },
 
-  check: async () => {
+  check: async (tracklist) => {
     for ([index, track] of tracklist.entries()) {
       console.log(index, track);
 

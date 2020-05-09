@@ -7,170 +7,193 @@ const StealthPlugin = require("puppeteer-extra-plugin-stealth");
 puppeteer.use(StealthPlugin());
 
 // puppeteer usage as normal
+const youtube = require("./youtube");
 
-puppeteer
-  .launch({
-    args: [
-      "--no-sandbox",
-      "--headless",
-      "--disable-gpu",
-      "--window-size=1920x1080",
-    ],
-  })
-  .then(async (browser) => {
-    const tracklist = [
-      {
-        artist: "Loadstar",
-        title: "Once Again",
-      },
-      {
-        artist: "Milkyway",
-        title: "Fairy Tale",
-      },
-      {
-        artist: "Random Movement",
-        title: "Lake Escape",
-      },
-    ];
-    const page = await browser.newPage();
-    await page.goto("https://accounts.google.com/");
+const tracklist = [
+  {
+    artist: "Loadstar",
+    title: "Once Again",
+  },
+  {
+    artist: "Milkyway",
+    title: "Fairy Tale",
+  },
+  {
+    artist: "Random Movement",
+    title: "Lake Escape",
+  },
+];
 
-    const fillEmail = async () => {
-      await page.waitForSelector('input[type="email"]');
-      await page.click('input[type="email"]');
-      await page.type('input[type="email"]', process.env.LOGIN, {
-        delay: 50,
-      });
-    };
-    const clickEmailNext = async () => {
-      await page.waitForSelector("#identifierNext");
-      await page.click("#identifierNext");
-      await page.waitFor(250);
-    };
-    const fillPassword = async () => {
-      await page.waitForSelector('input[type="password"]');
-      await page.evaluate(() => {
-        document.querySelector('input[type="password"]').click();
-      });
-      await page.waitFor(1000);
-      await page.type('input[type="password"]', process.env.PASSWORD, {
-        delay: 50,
-      });
-      await page.waitFor(250);
-    };
-    const clickPasswordNext = async () => {
-      await page.waitForSelector("#passwordNext");
-      await page.click("#passwordNext");
-      console.log("logged");
-      await page.waitFor(1000);
-    };
+(async () => {
+  await youtube.initialize();
+  await youtube.login(process.env.LOGIN, process.env.PASSWORD);
+  await youtube.check(tracklist);
+  await youtube.end();
+})();
 
-    await fillEmail();
-    await clickEmailNext();
-    await fillPassword();
-    await clickPasswordNext();
-    await page.goto("https://www.youtube.com/music_policies?nv=1");
-    console.log("redirected");
+// puppeteer
+//   .launch({
+//     args: [
+//       "--no-sandbox",
+//       "--headless",
+//       "--disable-gpu",
+//       "--window-size=1920x1080",
+//     ],
+//   })
+//   .then(async (browser) => {
+//     const tracklist = [
+//       {
+//         artist: "Loadstar",
+//         title: "Once Again",
+//       },
+//       {
+//         artist: "Milkyway",
+//         title: "Fairy Tale",
+//       },
+//       {
+//         artist: "Random Movement",
+//         title: "Lake Escape",
+//       },
+//     ];
+//     const page = await browser.newPage();
+//     await page.goto("https://accounts.google.com/");
 
-    for ([index, track] of tracklist.entries()) {
-      console.log(index, track);
+//     const fillEmail = async () => {
+//       await page.waitForSelector('input[type="email"]');
+//       await page.click('input[type="email"]');
+//       await page.type('input[type="email"]', process.env.LOGIN, {
+//         delay: 50,
+//       });
+//     };
+//     const clickEmailNext = async () => {
+//       await page.waitForSelector("#identifierNext");
+//       await page.click("#identifierNext");
+//       await page.waitFor(250);
+//     };
+//     const fillPassword = async () => {
+//       await page.waitForSelector('input[type="password"]');
+//       await page.evaluate(() => {
+//         document.querySelector('input[type="password"]').click();
+//       });
+//       await page.waitFor(1000);
+//       await page.type('input[type="password"]', process.env.PASSWORD, {
+//         delay: 50,
+//       });
+//       await page.waitFor(250);
+//     };
+//     const clickPasswordNext = async () => {
+//       await page.waitForSelector("#passwordNext");
+//       await page.click("#passwordNext");
+//       console.log("logged");
+//       await page.waitFor(1000);
+//     };
 
-      await page.evaluate(() => {
-        document.querySelector('input[maxlength="80"]').click();
-      });
+//     await fillEmail();
+//     await clickEmailNext();
+//     await fillPassword();
+//     await clickPasswordNext();
+//     await page.goto("https://www.youtube.com/music_policies?nv=1");
+//     console.log("redirected");
 
-      await page.waitFor(1000);
-      await page.type(
-        'input[maxlength="80"]',
-        `${tracklist[index].artist} - ${tracklist[index].title}`,
-        {
-          delay: 50,
-        }
-      );
-      console.log("typed");
-      await page.waitFor(3000);
+//     for ([index, track] of tracklist.entries()) {
+//       console.log(index, track);
 
-      await page.evaluate(() => {
-        document.querySelector(".search-icon").click();
-      });
-      console.log("clicked search icon");
-      //await page.waitFor(10000);
+//       await page.evaluate(() => {
+//         document.querySelector('input[maxlength="80"]').click();
+//       });
 
-      // search results
-      await page.waitForSelector(".track-list.sorting");
-      await page.waitFor(1000);
-      let resultsArray = await page.$$(".track-list > li");
-      let results = [];
+//       await page.waitFor(1000);
+//       await page.type(
+//         'input[maxlength="80"]',
+//         `${tracklist[index].artist} - ${tracklist[index].title}`,
+//         {
+//           delay: 50,
+//         }
+//       );
+//       console.log("typed");
+//       await page.waitFor(3000);
 
-      // isBanned
-      // .track-content .asset-not-available-text
+//       await page.evaluate(() => {
+//         document.querySelector(".search-icon").click();
+//       });
+//       console.log("clicked search icon");
+//       //await page.waitFor(10000);
 
-      // isOk
-      // !(.track-content .asset-not-available-text)
+//       // search results
+//       await page.waitForSelector(".track-list.sorting");
+//       await page.waitFor(1000);
+//       let resultsArray = await page.$$(".track-list > li");
+//       let results = [];
 
-      // isMissing
-      // .track-content.no-results
+//       // isBanned
+//       // .track-content .asset-not-available-text
 
-      // for infinite scroll
-      // let lastResultArrayLength = 0;
-      // while (resultsArray.length < count) {
-      //   await page.evaluate(`window.scrollTo(0, document.body.scrollHeight)`);
-      //   await page.waitFor(3000);
+//       // isOk
+//       // !(.track-content .asset-not-available-text)
 
-      //   resultsArray = await page.$$(".track-list > li");
+//       // isMissing
+//       // .track-content.no-results
 
-      //   if (lastResultArrayLength === resultsArray.length) break;
+//       // for infinite scroll
+//       // let lastResultArrayLength = 0;
+//       // while (resultsArray.length < count) {
+//       //   await page.evaluate(`window.scrollTo(0, document.body.scrollHeight)`);
+//       //   await page.waitFor(3000);
 
-      //   lastResultArrayLength = resultsArray.length;
-      // }
-      console.log("Entering for loop");
-      for (let [resultIndex, resultElement] of resultsArray.entries()) {
-        let artist = await resultElement.$eval(
-          ".audiolibrary-column-artist",
-          (element) => element.innerText
-        );
-        let title = await resultElement.$eval(
-          ".audiolibrary-column-title",
-          (element) => element.innerText
-        );
-        console.log(`=========`);
-        console.log(`Elem : ${artist} - ${title}`);
-        console.log(`=========`);
-        console.log(
-          `Tracklist : ${tracklist[index].artist} - ${tracklist[index].title}`
-        );
-        console.log(`=========`);
-        if (
-          artist === tracklist[index].artist &&
-          title === tracklist[index].title
-        ) {
-          await page.evaluate((i) => {
-            let num = i + 1;
-            console.log(num);
-            document
-              .querySelector(
-                `.track-list li:nth-child(${num}) .audiolibrary-track-head`
-              )
-              .click();
-          }, resultIndex);
+//       //   resultsArray = await page.$$(".track-list > li");
 
-          console.log("clicked li");
-          await page.waitFor(1000);
-        }
-        results.push(title);
-      }
+//       //   if (lastResultArrayLength === resultsArray.length) break;
 
-      console.log(results);
-      await page.screenshot({
-        path: `testresult${index}.png`,
-        fullPage: true,
-      });
-      console.log("screenshoted");
-      await page.evaluate(() => {
-        document.querySelector('input[maxlength="80"]').value = "";
-      });
-      await page.waitFor(1000);
-    }
+//       //   lastResultArrayLength = resultsArray.length;
+//       // }
+//       console.log("Entering for loop");
+//       for (let [resultIndex, resultElement] of resultsArray.entries()) {
+//         let artist = await resultElement.$eval(
+//           ".audiolibrary-column-artist",
+//           (element) => element.innerText
+//         );
+//         let title = await resultElement.$eval(
+//           ".audiolibrary-column-title",
+//           (element) => element.innerText
+//         );
+//         console.log(`=========`);
+//         console.log(`Elem : ${artist} - ${title}`);
+//         console.log(`=========`);
+//         console.log(
+//           `Tracklist : ${tracklist[index].artist} - ${tracklist[index].title}`
+//         );
+//         console.log(`=========`);
+//         if (
+//           artist === tracklist[index].artist &&
+//           title === tracklist[index].title
+//         ) {
+//           await page.evaluate((i) => {
+//             let num = i + 1;
+//             console.log(num);
+//             document
+//               .querySelector(
+//                 `.track-list li:nth-child(${num}) .audiolibrary-track-head`
+//               )
+//               .click();
+//           }, resultIndex);
 
-    await browser.close();
-  });
+//           console.log("clicked li");
+//           await page.waitFor(1000);
+//         }
+//         results.push(title);
+//       }
+
+//       console.log(results);
+//       await page.screenshot({
+//         path: `testresult${index}.png`,
+//         fullPage: true,
+//       });
+//       console.log("screenshoted");
+//       await page.evaluate(() => {
+//         document.querySelector('input[maxlength="80"]').value = "";
+//       });
+//       await page.waitFor(1000);
+//     }
+
+//     await browser.close();
+//   });
