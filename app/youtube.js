@@ -174,8 +174,14 @@ const youtube = {
     });
     console.log("screenshoted");
   },
-  log: (message) => {
-    console.log(chalk.green(message));
+  log: (message, type) => {
+    if (type === "error") {
+      console.log(chalk.red(message));
+    } else if (type === "warning") {
+      console.log(chalk.yellow(message));
+    } else {
+      console.log(chalk.color(message));
+    }
   },
   end: async () => {
     await browser.close();
