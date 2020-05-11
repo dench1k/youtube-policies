@@ -1,7 +1,7 @@
 // puppeteer-extra is a drop-in replacement for puppeteer,
 // it augments the installed puppeteer with plugin functionality
 const puppeteer = require("puppeteer-extra");
-
+const chalk = require("chalk");
 // add stealth plugin and use defaults (all evasion techniques)
 const StealthPlugin = require("puppeteer-extra-plugin-stealth");
 puppeteer.use(StealthPlugin());
@@ -44,7 +44,7 @@ const youtube = {
   },
 
   fillPassword: async (password) => {
-    console.log("filled email, now pass");
+    youtube.log("filled email, now pass");
     youtube.screenshot(`pass.png`);
     const selectorPassword = 'input[type="password"]';
     await page.waitForSelector('input[type="password"]');
@@ -174,7 +174,9 @@ const youtube = {
     });
     console.log("screenshoted");
   },
-
+  log: (message) => {
+    console.log(chalk.green(message));
+  },
   end: async () => {
     await browser.close();
   },
