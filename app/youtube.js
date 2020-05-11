@@ -73,15 +73,15 @@ const youtube = {
     await youtube.fillPassword(password);
     await youtube.clickPasswordNext();
 
-    console.log("logged");
+    youtube.log("logged");
 
     await page.goto(BASE_URL);
-    console.log("redirected");
+    youtube.log("redirected");
   },
 
   check: async (tracklist) => {
     for ([index, track] of tracklist.entries()) {
-      console.log(index, track);
+      youtube.log(track, track);
 
       await page.evaluate(() => {
         document.querySelector('input[maxlength="80"]').click();
@@ -95,14 +95,13 @@ const youtube = {
           delay: 50,
         }
       );
-      console.log("typed");
+      youtube.log("typed");
       await page.waitFor(3000);
 
       await page.evaluate(() => {
         document.querySelector(".search-icon").click();
       });
-      console.log("clicked search icon");
-      //await page.waitFor(10000);
+      youtube.log("clicked search icon");
 
       // search results
       await page.waitForSelector(".track-list.sorting");
@@ -119,7 +118,6 @@ const youtube = {
       // isMissing
       // .track-content.no-results
 
-      console.log("Entering for loop");
       for (let [resultIndex, resultElement] of resultsArray.entries()) {
         let artist = await resultElement.$eval(
           ".audiolibrary-column-artist",
@@ -129,20 +127,20 @@ const youtube = {
           ".audiolibrary-column-title",
           (element) => element.innerText
         );
-        console.log(`=========`);
-        console.log(`Elem : ${artist} - ${title}`);
-        console.log(`=========`);
-        console.log(
+        youtube.log(`=========`, "warning");
+        youtube.log(`Elem : ${artist} - ${title}`);
+        youtube.log(`=========`, "warning");
+        youtube.log(
           `Tracklist : ${tracklist[index].artist} - ${tracklist[index].title}`
         );
-        console.log(`=========`);
+        youtube.log(`=========`, "warning");
         if (
           artist === tracklist[index].artist &&
           title === tracklist[index].title
         ) {
           await page.evaluate((i) => {
             let num = i + 1;
-            console.log(num);
+            youtube.log(num, "warning");
             document
               .querySelector(
                 `.track-list li:nth-child(${num}) .audiolibrary-track-head`
@@ -150,7 +148,7 @@ const youtube = {
               .click();
           }, resultIndex);
 
-          console.log("clicked li");
+          youtube.log("clicked li");
           await page.waitFor(1000);
         }
         results.push(title);
@@ -172,7 +170,7 @@ const youtube = {
       path: filename,
       fullPage: true,
     });
-    console.log("screenshoted");
+    youtube.log("screenshoted");
   },
   log: (message, type) => {
     if (type === "error") {
