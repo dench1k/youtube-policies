@@ -47,9 +47,9 @@ const youtube = {
     youtube.log("filled email, now pass");
     youtube.screenshot(`pass.png`);
     const selectorPassword = 'input[type="password"]';
-    await page.waitForSelector('input[type="password"]');
+    await page.waitForSelector(selectorPassword);
     await page.evaluate(() => {
-      document.querySelector('input[type="password"]').click();
+      document.querySelector(selectorPassword).click();
     });
     await page.waitFor(1000);
     await page.type(selectorPassword, password, {
@@ -81,7 +81,7 @@ const youtube = {
 
   check: async (tracklist) => {
     for ([index, track] of tracklist.entries()) {
-      youtube.log(track, track);
+      youtube.log(index, track);
 
       await page.evaluate(() => {
         document.querySelector('input[maxlength="80"]').click();
