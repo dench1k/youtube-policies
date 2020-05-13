@@ -155,8 +155,10 @@ const youtube = {
       }
 
       console.log(results);
-
-      youtube.screenshot(`testresult${index}.png`);
+      const timestamp = Date.now();
+      youtube.screenshot(
+        `${index}_${tracklist[index].artist}_${tracklist[index].title}_${timestamp}.png`
+      );
 
       await page.evaluate(() => {
         document.querySelector('input[maxlength="80"]').value = "";
@@ -167,7 +169,7 @@ const youtube = {
 
   screenshot: async (filename) => {
     await page.screenshot({
-      path: filename,
+      path: `screenshots/${filename}`,
       fullPage: true,
     });
     youtube.log("screenshoted");
