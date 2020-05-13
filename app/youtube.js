@@ -2,6 +2,7 @@
 // it augments the installed puppeteer with plugin functionality
 const puppeteer = require("puppeteer-extra");
 const chalk = require("chalk");
+
 // add stealth plugin and use defaults (all evasion techniques)
 const StealthPlugin = require("puppeteer-extra-plugin-stealth");
 puppeteer.use(StealthPlugin());
@@ -10,7 +11,7 @@ puppeteer.use(StealthPlugin());
 
 const BASE_URL = "https://www.youtube.com/music_policies?nv=1";
 const LOGIN_URL = "https://accounts.google.com/";
-
+const SCREENSHOTS_PATH = "app/screenshots";
 let browser = null;
 let page = null;
 
@@ -169,7 +170,7 @@ const youtube = {
 
   screenshot: async (filename) => {
     await page.screenshot({
-      path: `screenshots/${filename}`,
+      path: `${SCREENSHOTS_PATH}/${filename}`,
       fullPage: true,
     });
     youtube.log("screenshoted");
