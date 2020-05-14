@@ -27,9 +27,9 @@ const tracklist = [
 
 (async () => {
   await youtube.initialize();
-  // await youtube.login(process.env.LOGIN, process.env.PASSWORD);
-  // await youtube.check(tracklist);
-  // await youtube.end();
+  await youtube.login(process.env.LOGIN, process.env.PASSWORD);
+  await youtube.check(tracklist);
+  await youtube.end();
   await open(SCREENSHOTS_PATH, { wait: true });
 })();
 

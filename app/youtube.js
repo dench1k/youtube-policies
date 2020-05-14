@@ -30,11 +30,9 @@ const youtube = {
 
   fillEmail: async (email) => {
     const selectorEmail = 'input[type="email"]';
-    await page.waitForSelector(selectorEmail);
-    await page.click(selectorEmail);
-    await page.type(selectorEmail, email, {
-      delay: 50,
-    });
+    await page.waitForSelector('input[type="email"]');
+    await page.click('input[type="email"]');
+    await page.type('input[type="email"]', email);
   },
 
   clickEmailNext: async () => {
