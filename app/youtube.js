@@ -32,7 +32,10 @@ const youtube = {
     const selectorEmail = 'input[type="email"]';
     await page.waitForSelector('input[type="email"]');
     await page.click('input[type="email"]');
-    await page.type('input[type="email"]', email);
+    youtube.log("BAAAm");
+    await page.type('input[type="email"]', email, {
+      delay: 50,
+    });
   },
 
   clickEmailNext: async () => {
@@ -179,7 +182,7 @@ const youtube = {
     } else if (type === "warning") {
       console.log(chalk.yellow(message));
     } else {
-      console.log(chalk.color(message));
+      console.log(chalk.green(message));
     }
   },
   end: async () => {
