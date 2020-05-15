@@ -32,7 +32,6 @@ const youtube = {
     const selectorEmail = 'input[type="email"]';
     await page.waitForSelector('input[type="email"]');
     await page.click('input[type="email"]');
-    youtube.log("BAAAm");
     await page.type('input[type="email"]', email, {
       delay: 50,
     });
@@ -47,14 +46,13 @@ const youtube = {
 
   fillPassword: async (password) => {
     youtube.log("filled email, now pass");
-    youtube.screenshot(`pass.png`);
     const selectorPassword = 'input[type="password"]';
-    await page.waitForSelector(selectorPassword);
+    await page.waitForSelector('input[type="password"]');
     await page.evaluate(() => {
-      document.querySelector(selectorPassword).click();
+      document.querySelector('input[type="password"]').click();
     });
     await page.waitFor(1000);
-    await page.type(selectorPassword, password, {
+    await page.type('input[type="password"]', password, {
       delay: 50,
     });
     await page.waitFor(250);
@@ -69,7 +67,7 @@ const youtube = {
 
   login: async (email, password) => {
     await page.goto(LOGIN_URL);
-
+    youtube.log(email, "warning");
     await youtube.fillEmail(email);
     await youtube.clickEmailNext();
     await youtube.fillPassword(password);
@@ -83,7 +81,7 @@ const youtube = {
 
   check: async (tracklist) => {
     for ([index, track] of tracklist.entries()) {
-      youtube.log(index, track);
+      youtube.log(`${index}: ${track.artist} - ${track.title}`, "warning");
 
       await page.evaluate(() => {
         document.querySelector('input[maxlength="80"]').click();
