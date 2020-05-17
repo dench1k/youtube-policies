@@ -140,7 +140,6 @@ const youtube = {
         ) {
           await page.evaluate((i) => {
             let num = i + 1;
-            youtube.log(num, "warning");
             document
               .querySelector(
                 `.track-list li:nth-child(${num}) .audiolibrary-track-head`
@@ -148,7 +147,7 @@ const youtube = {
               .click();
           }, resultIndex);
 
-          youtube.log("clicked li");
+          youtube.log(`clicked ${resultIndex} li`);
           await page.waitFor(1000);
         }
         results.push(title);
