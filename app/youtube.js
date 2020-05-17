@@ -45,7 +45,6 @@ const youtube = {
   },
 
   fillPassword: async (password) => {
-    youtube.log("filled email, now pass");
     const selectorPassword = 'input[type="password"]';
     await page.waitForSelector('input[type="password"]');
     await page.evaluate(() => {
@@ -67,16 +66,16 @@ const youtube = {
 
   login: async (email, password) => {
     await page.goto(LOGIN_URL);
-    youtube.log(email, "warning");
+
     await youtube.fillEmail(email);
     await youtube.clickEmailNext();
     await youtube.fillPassword(password);
     await youtube.clickPasswordNext();
 
-    youtube.log("logged");
+    youtube.log("Logged");
 
     await page.goto(BASE_URL);
-    youtube.log("redirected");
+    youtube.log(`Redirected to ${BASE_URL}`);
   },
 
   check: async (tracklist) => {
@@ -95,19 +94,15 @@ const youtube = {
           delay: 50,
         }
       );
-      youtube.log("typed");
       await page.waitFor(3000);
-
       await page.evaluate(() => {
         document.querySelector(".search-icon").click();
       });
-      youtube.log("clicked search icon");
 
       // search results
       await page.waitForSelector(".track-list.sorting");
       await page.waitFor(1000);
       let resultsArray = await page.$$(".track-list > li");
-      let results = [];
 
       // isBanned
       // .track-content .asset-not-available-text
@@ -127,13 +122,12 @@ const youtube = {
           ".audiolibrary-column-title",
           (element) => element.innerText
         );
-        youtube.log(`=========`, "warning");
-        youtube.log(`Elem : ${artist} - ${title}`);
-        youtube.log(`=========`, "warning");
+        youtube.log(`---`, "warning");
+        youtube.log(`Current track: ${artist} - ${title}`);
         youtube.log(
-          `Tracklist : ${tracklist[index].artist} - ${tracklist[index].title}`
+          `Tracklist: ${tracklist[index].artist} - ${tracklist[index].title}`
         );
-        youtube.log(`=========`, "warning");
+        youtube.log(`---`, "warning");
         if (
           artist === tracklist[index].artist &&
           title === tracklist[index].title
@@ -146,14 +140,13 @@ const youtube = {
               )
               .click();
           }, resultIndex);
-
-          youtube.log(`clicked ${resultIndex} li`);
+          youtube.log(" ");
+          youtube.log(`Match! Clicked ${resultIndex + 1} result`);
+          youtube.log(" ");
           await page.waitFor(1000);
         }
-        results.push(title);
       }
 
-      console.log(results);
       const timestamp = Date.now();
       youtube.screenshot(
         `${index}_${tracklist[index].artist}_${tracklist[index].title}_${timestamp}.png`
@@ -171,7 +164,9 @@ const youtube = {
       path: `${SCREENSHOTS_PATH}/${filename}`,
       fullPage: true,
     });
-    youtube.log("screenshoted");
+    youtube.log(" ");
+    youtube.log("Screenshot was taken");
+    youtube.log(" ");
   },
   log: (message, type) => {
     if (type === "error") {
