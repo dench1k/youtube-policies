@@ -2,6 +2,10 @@
 // it augments the installed puppeteer with plugin functionality
 const puppeteer = require("puppeteer-extra");
 const chalk = require("chalk");
+const fs = require("fs");
+const util = require("util");
+const readdir = util.promisify(fs.readdir);
+const unlink = util.promisify(fs.unlink);
 
 // add stealth plugin and use defaults (all evasion techniques)
 const StealthPlugin = require("puppeteer-extra-plugin-stealth");
@@ -167,6 +171,17 @@ const youtube = {
     youtube.log(" ");
     youtube.log("Screenshot was taken");
     youtube.log(" ");
+  },
+  removeFromDir: async (directory) => {
+    try {
+      const files = await readdir(directory);
+      const unlinkPromises = files.map((filename) =>
+        unlink(`${directory}/${filename}`)
+      );
+      return Promise.all(unlinkPromises);
+    } catch (err) {
+      console.log(err);
+    }
   },
   log: (message, type) => {
     if (type === "error") {

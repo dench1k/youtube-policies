@@ -9,7 +9,7 @@ puppeteer.use(StealthPlugin());
 // puppeteer usage as normal
 const open = require("open");
 const youtube = require("./youtube");
-const SCREENSHOTS_PATH = "app";
+const SCREENSHOTS_PATH = `${__dirname}/screenshots`;
 const tracklist = [
   {
     artist: "Loadstar",
@@ -28,6 +28,7 @@ const tracklist = [
 (async () => {
   await youtube.initialize();
   await youtube.login(process.env.LOGIN, process.env.PASSWORD);
+  await youtube.removeFromDir(SCREENSHOTS_PATH);
   await youtube.check(tracklist);
   await youtube.end();
   await open(SCREENSHOTS_PATH, { wait: true });
