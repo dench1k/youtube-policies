@@ -34,29 +34,29 @@ const youtube = {
   },
 
   fillEmail: async (email) => {
-    const selectorEmail = 'input[type="email"]';
-    await page.waitForSelector(selectorEmail);
-    await page.click(selectorEmail);
-    await page.type(selectorEmail, email, {
+    const inputEmail = 'input[type="email"]';
+    await page.waitForSelector(inputEmail);
+    await page.click(inputEmail);
+    await page.type(inputEmail, email, {
       delay: 50,
     });
   },
 
   clickEmailNext: async () => {
-    const selectorButton = "#identifierNext";
-    await page.waitForSelector(selectorButton);
-    await page.click(selectorButton);
+    const buttonNext = "#identifierNext";
+    await page.waitForSelector(buttonNext);
+    await page.click(buttonNext);
     await page.waitFor(250);
   },
 
   fillPassword: async (password) => {
-    const selectorPassword = 'input[type="password"]';
-    await page.waitForSelector('input[type="password"]');
-    await page.evaluate(() => {
-      document.querySelector('input[type="password"]').click();
-    });
+    const inputPassword = 'input[type="password"]';
+    await page.waitForSelector(inputPassword);
+    await page.evaluate((selector) => {
+      document.querySelector(selector).click();
+    }, inputPassword);
     await page.waitFor(1000);
-    await page.type('input[type="password"]', password, {
+    await page.type(inputPassword, password, {
       delay: 50,
     });
     await page.waitFor(250);
