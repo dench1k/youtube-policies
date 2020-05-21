@@ -29,6 +29,7 @@ const youtube = {
         "--window-size=1920x1080",
       ],
     });
+
     page = await browser.newPage();
   },
 
