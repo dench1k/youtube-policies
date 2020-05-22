@@ -128,7 +128,7 @@ const youtube = {
           (element) => element.innerText
         );
         youtube.log(`---`, "warning");
-        youtube.log(`Current track: ${artist} - ${title}`);
+        youtube.log(`Current track: ${artist} - ${title}`, "track");
         youtube.log(
           `Tracklist: ${tracklist[index].artist} - ${tracklist[index].title}`
         );
@@ -189,6 +189,8 @@ const youtube = {
       console.log(chalk.red(message));
     } else if (type === "warning") {
       console.log(chalk.yellow(message));
+    } else if (type === "track") {
+      console.log(chalk.magenta(message));
     } else {
       console.log(chalk.green(message));
     }
