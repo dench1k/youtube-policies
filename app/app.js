@@ -12,16 +12,92 @@ const youtube = require("./youtube");
 const SCREENSHOTS_PATH = `${__dirname}/screenshots`;
 const tracklist = [
   {
-    artist: "Loadstar",
-    title: "Once Again",
+    artist: "Deadmau5",
+    title: "Avaritia (Dimension Remix)",
   },
   {
-    artist: "Milkyway",
-    title: "Fairy Tale",
+    artist: "Mojoman",
+    title: "Because Of Us",
   },
   {
-    artist: "Random Movement",
-    title: "Lake Escape",
+    artist: "Maduk",
+    title: "The End",
+  },
+  {
+    artist: "Alex Adair",
+    title: "Make Me Feel Better (S.P.Y Remix)",
+  },
+  {
+    artist: "Motiv",
+    title: "Viaduct",
+  },
+  {
+    artist: "Silence Groove",
+    title: "Evergreen 2006",
+  },
+  {
+    artist: "ALB",
+    title: "Evolver",
+  },
+  {
+    artist: "Netsky",
+    title: "Come Back Home",
+  },
+  {
+    artist: "Pola & Bryson",
+    title: "Call Of The Night",
+  },
+  {
+    artist: "Pulsate",
+    title: "Cold Souls",
+  },
+  {
+    artist: "Phaction",
+    title: "Someone",
+  },
+  {
+    artist: "Bcee",
+    title: "Firebox",
+  },
+  {
+    artist: "Au/Ra",
+    title: "Panic Room (Culture Shock Remix)",
+  },
+  {
+    artist: "Emperor",
+    title: "Foxholes",
+  },
+  {
+    artist: "Knife Party",
+    title: "LRAD (The Prototypes Remix)",
+  },
+  {
+    artist: "High Contrast",
+    title: "If We Ever",
+  },
+  {
+    artist: "Bert H",
+    title: "Old Days Were Better",
+  },
+  {
+    artist: "Petroll",
+    title: "Leaf",
+  },
+  {
+    artist: "Makoto",
+    title: "Mystic Crystals",
+  },
+  {
+    artist: "Kin:etic",
+    title: "Blue Grey",
+  },
+  {
+    artist: "Kill Paris",
+    title: "Silence Of Heartbreak (Random Movement Remix)",
+  },
+  {
+    artist: "Intelligent Manners",
+    title: "All By Myself",
   },
 ];
 
