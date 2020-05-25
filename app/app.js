@@ -60,7 +60,7 @@ const tracklist = [
     title: "Firebox",
   },
   {
-    artist: "Au/Ra",
+    artist: "AuRa",
     title: "Panic Room (Culture Shock Remix)",
   },
   {
@@ -88,7 +88,7 @@ const tracklist = [
     title: "Mystic Crystals",
   },
   {
-    artist: "Kin:etic",
+    artist: "Kinetic",
     title: "Blue Grey",
   },
   {
