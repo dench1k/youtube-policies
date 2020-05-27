@@ -109,6 +109,7 @@ const youtube = {
       await page.waitFor(1000);
       let resultsArray = await page.$$(".track-list > li");
 
+      // TODO: add status logger
       // isBanned
       // .track-content .asset-not-available-text
 
