@@ -80,7 +80,7 @@ const youtube = {
     youtube.log("Logged");
 
     await page.goto(BASE_URL);
-    youtube.log(`Redirected to ${BASE_URL}`);
+    youtube.log(`Redirected to ${BASE_URL}`, "text");
   },
 
   check: async (tracklist) => {
@@ -119,12 +119,13 @@ const youtube = {
           ".audiolibrary-column-title",
           (element) => element.innerText
         );
-        youtube.log(`---`, "warning");
+        youtube.log("***", "text");
         youtube.log(`Current track: ${artist} - ${title}`, "track");
         youtube.log(
-          `Tracklist: ${tracklist[index].artist} - ${tracklist[index].title}`
+          `Tracklist: ${tracklist[index].artist} - ${tracklist[index].title}`,
+          "text"
         );
-        youtube.log(`---`, "warning");
+        youtube.log("***", "text");
         if (
           artist === tracklist[index].artist &&
           title === tracklist[index].title
@@ -137,9 +138,9 @@ const youtube = {
               )
               .click();
           }, resultIndex);
-          youtube.log(" ");
           youtube.log(`Match! Clicked ${resultIndex + 1} result`);
-          youtube.log(" ");
+          youtube.log("***", "text");
+          youtube.log("");
 
           // CHECK STATUS OF THE TRACK
           try {
@@ -148,14 +149,14 @@ const youtube = {
               ".track-content .asset-not-available-text",
               { timeout: 1000 }
             );
-            youtube.log("***", "error");
+            youtube.log("***", "text");
             youtube.log("Status: BAN", "error");
-            youtube.log("***", "error");
+            youtube.log("***", "text");
           } catch {
             // isOk
-            youtube.log("***");
+            youtube.log("***", "text");
             youtube.log("Status: OK");
-            youtube.log("***");
+            youtube.log("***", "text");
           }
           await page.waitFor(1000);
         }
@@ -196,6 +197,8 @@ const youtube = {
   log: (message, type) => {
     if (type === "error") {
       console.log(chalk.red(message));
+    } else if (type === "text") {
+      console.log(chalk.gray(message));
     } else if (type === "warning") {
       console.log(chalk.yellow(message));
     } else if (type === "track") {
