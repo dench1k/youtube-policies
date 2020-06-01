@@ -105,6 +105,7 @@ const youtube = {
       });
 
       // search results
+      // TODO: no results
       await page.waitForSelector(".track-list.sorting");
       await page.waitFor(1000);
       let resultsArray = await page.$$(".track-list > li");
@@ -140,23 +141,21 @@ const youtube = {
           youtube.log(`Match! Clicked ${resultIndex + 1} result`);
           youtube.log(" ");
 
-          // TODO: add status logger
-
-          // isMissing
-          // .track-content.no-results
-
+          // CHECK STATUS OF THE TRACK
           try {
             // isBanned
-            // .track-content .asset-not-available-text
             await page.waitForSelector(
               ".track-content .asset-not-available-text",
               { timeout: 1000 }
             );
-            console.log("isBanned");
+            youtube.log("***", "error");
+            youtube.log("Status: BAN", "error");
+            youtube.log("***", "error");
           } catch {
             // isOk
-            // !(.track-content .asset-not-available-text)
-            console.log("isOK");
+            youtube.log("***");
+            youtube.log("Status: OK");
+            youtube.log("***");
           }
           await page.waitFor(1000);
         }

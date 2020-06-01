@@ -16,6 +16,10 @@ const tracklist = [
     title: "Avaritia (Dimension Remix)",
   },
   {
+    artist: "Karma Kingdom",
+    title: "Pleasures (Hazqa Remix)",
+  },
+  {
     artist: "Netsky",
     title: "Come Back Home",
   },
