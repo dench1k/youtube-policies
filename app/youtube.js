@@ -109,16 +109,6 @@ const youtube = {
       await page.waitFor(1000);
       let resultsArray = await page.$$(".track-list > li");
 
-      // TODO: add status logger
-      // isBanned
-      // .track-content .asset-not-available-text
-
-      // isOk
-      // !(.track-content .asset-not-available-text)
-
-      // isMissing
-      // .track-content.no-results
-
       for (let [resultIndex, resultElement] of resultsArray.entries()) {
         let artist = await resultElement.$eval(
           ".audiolibrary-column-artist",
@@ -149,6 +139,25 @@ const youtube = {
           youtube.log(" ");
           youtube.log(`Match! Clicked ${resultIndex + 1} result`);
           youtube.log(" ");
+
+          // TODO: add status logger
+
+          // isMissing
+          // .track-content.no-results
+
+          try {
+            // isBanned
+            // .track-content .asset-not-available-text
+            await page.waitForSelector(
+              ".track-content .asset-not-available-text",
+              { timeout: 1000 }
+            );
+            console.log("isBanned");
+          } catch {
+            // isOk
+            // !(.track-content .asset-not-available-text)
+            console.log("isOK");
+          }
           await page.waitFor(1000);
         }
       }
