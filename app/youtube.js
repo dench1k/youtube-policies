@@ -106,6 +106,7 @@ const youtube = {
 
       // search results
       // TODO: no results
+      // check .track-list for a class .no-results in DOM after search. if exists, check li
       await page.waitForSelector(".track-list.sorting");
       await page.waitFor(1000);
       let resultsArray = await page.$$(".track-list > li");
