@@ -107,7 +107,15 @@ const youtube = {
       // search results
       // TODO: no results
       // check .track-content for a class .no-results in DOM after search. if exists, check li
-      await page.waitForSelector(".track-content.no-results");
+      // try {
+      //   await page.waitForSelector(".track-content.no-results", {
+      //     timeout: 1000,
+      //   });
+      //   youtube.log("***", "text");
+      //   youtube.log("Status: NOT FOUND", "error");
+      //   youtube.log("***", "text");
+      // } catch {}
+
       await page.waitForSelector(".track-list.sorting");
       await page.waitFor(1000);
       let resultsArray = await page.$$(".track-list > li");
