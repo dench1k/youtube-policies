@@ -12,13 +12,14 @@ const youtube = require("./youtube");
 const SCREENSHOTS_PATH = `${__dirname}/screenshots`;
 const tracklist = [
   {
-    artist: "Deadmau5",
-    title: "Avaritia (Dimension Remix)",
-  },
-  {
     artist: "Karma Kingdom",
     title: "Pleasures (Hazqa Remix)",
   },
+  {
+    artist: "Deadmau5",
+    title: "Avaritia (Dimension Remix)",
+  },
+
   {
     artist: "Netsky",
     title: "Come Back Home",
