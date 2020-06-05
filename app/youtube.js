@@ -105,16 +105,19 @@ const youtube = {
       });
 
       // search results
-      // TODO: no results
-      // check .track-content for a class .no-results in DOM after search. if exists, check li
-      // await page.waitForSelector(".no-results", {
-      //   timeout: 10000,
-      // });
-      // youtube.log("***", "text");
-      // youtube.log("Status: NOT FOUND", "error");
-      // youtube.log("***", "text");
+
       await page.waitForSelector(".track-list.sorting");
       await page.waitFor(1000);
+
+      try {
+        await page.waitForSelector(".no-results", { timeout: 1000 });
+        youtube.log("***", "text");
+        youtube.log("Status: NOT FOUND", "error");
+        youtube.log("***", "text");
+      } catch {
+        youtube.log("Analyzing results...", "track");
+      }
+
       let resultsArray = await page.$$(".track-list > li");
 
       for (let [resultIndex, resultElement] of resultsArray.entries()) {
