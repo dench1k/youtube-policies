@@ -109,6 +109,7 @@ const youtube = {
       await page.waitForSelector(".track-list.sorting");
       await page.waitFor(1000);
 
+      // if track is not found
       try {
         await page.waitForSelector(".no-results", { timeout: 1000 });
         youtube.log("***", "text");
