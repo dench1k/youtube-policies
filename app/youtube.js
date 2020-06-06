@@ -85,29 +85,8 @@ const youtube = {
 
   check: async (tracklist) => {
     for ([index, track] of tracklist.entries()) {
-      youtube.log(`${index}: ${track.artist} - ${track.title}`, "warning");
-
-      await page.evaluate(() => {
-        document.querySelector('input[maxlength="80"]').click();
-      });
-
-      await page.waitFor(1000);
-      await page.type(
-        'input[maxlength="80"]',
-        `${tracklist[index].artist} - ${tracklist[index].title}`,
-        {
-          delay: 50,
-        }
-      );
-      await page.waitFor(3000);
-      await page.evaluate(() => {
-        document.querySelector(".search-icon").click();
-      });
-
-      // search results
-
-      await page.waitForSelector(".track-list.sorting");
-      await page.waitFor(1000);
+      // search for a particular track
+      await youtube.search(tracklist, index, track);
 
       // if track is not found
       try {
@@ -184,7 +163,31 @@ const youtube = {
       await page.waitFor(1000);
     }
   },
+  search: async (tracklist, index, track) => {
+    youtube.log(`${index}: ${track.artist} - ${track.title}`, "warning");
 
+    await page.evaluate(() => {
+      document.querySelector('input[maxlength="80"]').click();
+    });
+
+    await page.waitFor(1000);
+    await page.type(
+      'input[maxlength="80"]',
+      `${tracklist[index].artist} - ${tracklist[index].title}`,
+      {
+        delay: 50,
+      }
+    );
+    await page.waitFor(3000);
+    await page.evaluate(() => {
+      document.querySelector(".search-icon").click();
+    });
+
+    // search results
+
+    await page.waitForSelector(".track-list.sorting");
+    await page.waitFor(1000);
+  },
   screenshot: async (filename) => {
     await page.screenshot({
       path: `${SCREENSHOTS_PATH}/${filename}`,
